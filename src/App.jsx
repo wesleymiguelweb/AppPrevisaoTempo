@@ -1,9 +1,13 @@
-function App() {
+import WeatherApp from './components/WeatherApp'
+
+const App = () => {
   return (
     <>
-      Ola
+      <WeatherApp />
     </>
   )
 }
 
-export default App
+export default App;
+
+
