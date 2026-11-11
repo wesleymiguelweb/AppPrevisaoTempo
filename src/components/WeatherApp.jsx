@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './WeatherApp.css'
 import SearchBar from './SearchBar'
 import WeatherCard from './WeatherCard'
+import WeatherDetails from './WeatherDetails'
 import { getWeatherInfo } from '../utils/weatherCode'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
 import { weatherImages, backgroundImages } from '../constants/weatherTheme'
@@ -99,19 +100,7 @@ const WeatherApp = () => {
               weatherImage={weatherImage}
             />
 
-            <div className="weather-data">
-              <div className="humidity">
-                <div className="data-name">Humidity</div>
-                <i className="fa-solid fa-droplet"></i>
-                <div className="data">{data.humidity}%</div>
-              </div>
-
-              <div className="wind">
-                <div className="data-name">Wind</div>
-                <i className="fa-solid fa-wind"></i>
-                <div className="data">{data.windSpeed} km/h</div>
-              </div>
-            </div>
+            <WeatherDetails data={data} />
           </>
         )}
       </div>
