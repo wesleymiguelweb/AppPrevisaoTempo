@@ -1,13 +1,7 @@
 import WeatherApp from './components/WeatherApp'
 
 const App = () => {
-  return (
-    <div>
-      <WeatherApp />
-    </div>
-  )
+  return <WeatherApp />
 }
 
-export default App;
-
-
+export default App
