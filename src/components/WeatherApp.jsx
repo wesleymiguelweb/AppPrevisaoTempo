@@ -3,6 +3,7 @@ import './WeatherApp.css'
 import SearchBar from './SearchBar'
 import WeatherCard from './WeatherCard'
 import WeatherDetails from './WeatherDetails'
+import NotFound from './NotFound'
 import { getWeatherInfo } from '../utils/weatherCode'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
 import { weatherImages, backgroundImages } from '../constants/weatherTheme'
@@ -12,7 +13,7 @@ const WeatherApp = () => {
   const [data, setData] = useState(null)
   const [location, setLocation] = useState('')
   const [loading, setLoading] = useState(false)
-  const [notFound, setNotFound] = useState(false)
+  const [error, setError] = useState('')
 
   const handleInputChanges = (event) => {
     setLocation(event.target.value)
@@ -28,11 +29,12 @@ const WeatherApp = () => {
     const normalizedCity = cityName.trim()
 
     if (!normalizedCity) {
+      setError('Enter a city name')
       return
     }
 
     setLoading(true)
-    setNotFound(false)
+    setError('')
     setData(null)
 
     try {
@@ -53,7 +55,7 @@ const WeatherApp = () => {
       })
     } catch (error) {
       console.error('Erro ao buscar clima:', error)
-      setNotFound(true)
+      setError(error.message || 'Unable to load weather data')
     } finally {
       setLoading(false)
     }
@@ -88,8 +90,8 @@ const WeatherApp = () => {
           <img src={loadingGif} alt="Loading" className="loader" />
         )}
 
-        {notFound && !loading && (
-          <div className="not-found">Cidade não encontrada</div>
+        {error && !loading && (
+          <NotFound message={error} />
         )}
 
         {data && !loading && (
