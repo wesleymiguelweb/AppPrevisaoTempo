@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import './WeatherApp.css'
-import { getWeatherImage, describeWeatherCode } from '../utils/weatherCode'
+import { getWeatherInfo } from '../utils/weatherCode'
 import { formatDate } from '../utils/formatDate'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
+import { weatherImages, backgroundImages } from '../constants/weatherTheme'
 import loadingGif from '../assets/images/loading.gif'
 
 const WeatherApp = () => {
@@ -60,9 +61,19 @@ const WeatherApp = () => {
     search('London')
   }, [])
 
+  const weatherInfo = data ? getWeatherInfo(data.weatherCode) : null
+  const weatherType = weatherInfo?.type || 'sunny'
+  const weatherImage = weatherImages[weatherType]
+  const backgroundImage = backgroundImages[weatherType]
+
   return (
-    <div className="container">
-      <div className="weather-app">
+    <div className="container" style={{ backgroundImage }}>
+      <div
+        className="weather-app"
+        style={{
+          backgroundImage: backgroundImage.replace('to right', 'to top'),
+        }}
+      >
         <div className="search">
           <div className="search-top">
             <i className="fa-solid fa-location-dot"></i>
@@ -96,10 +107,12 @@ const WeatherApp = () => {
           <>
             <div className="weather">
               <img
-                src={getWeatherImage(data.weatherCode)}
-                alt={describeWeatherCode(data.weatherCode)}
+                src={weatherImage}
+                alt={weatherInfo?.description || 'Weather'}
               />
-              <div className="weather-type">{describeWeatherCode(data.weatherCode)}</div>
+              <div className="weather-type">
+                {weatherInfo?.description || '--'}
+              </div>
               <div className="temp">{Math.round(data.temperature)}°</div>
             </div>
 
