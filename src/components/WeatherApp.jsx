@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import './WeatherApp.css'
 import SearchBar from './SearchBar'
+import WeatherCard from './WeatherCard'
 import { getWeatherInfo } from '../utils/weatherCode'
-import { formatDate } from '../utils/formatDate'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
 import { weatherImages, backgroundImages } from '../constants/weatherTheme'
 import loadingGif from '../assets/images/loading.gif'
@@ -93,20 +93,11 @@ const WeatherApp = () => {
 
         {data && !loading && (
           <>
-            <div className="weather">
-              <img
-                src={weatherImage}
-                alt={weatherInfo?.description || 'Weather'}
-              />
-              <div className="weather-type">
-                {weatherInfo?.description || '--'}
-              </div>
-              <div className="temp">{Math.round(data.temperature)}°</div>
-            </div>
-
-            <div className="weather-date">
-              <p>{formatDate(data.time)}</p>
-            </div>
+            <WeatherCard
+              data={data}
+              weatherInfo={weatherInfo}
+              weatherImage={weatherImage}
+            />
 
             <div className="weather-data">
               <div className="humidity">
