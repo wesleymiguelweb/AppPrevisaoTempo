@@ -4,8 +4,8 @@ import SearchBar from './SearchBar'
 import WeatherCard from './WeatherCard'
 import WeatherDetails from './WeatherDetails'
 import NotFound from './NotFound'
-import { getWeatherInfo } from '../utils/weatherCode'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
+import { getWeatherInfo } from '../utils/weatherCode'
 import { weatherImages, backgroundImages } from '../constants/weatherTheme'
 import loadingGif from '../assets/images/loading.gif'
 
@@ -33,11 +33,10 @@ const WeatherApp = () => {
       return
     }
 
-    setLoading(true)
-    setError('')
-    setData(null)
-
     try {
+      setLoading(true)
+      setError('')
+
       const coordinates = await getCoordinates(normalizedCity)
       const currentWeather = await getCurrentWeather(
         coordinates.latitude,
@@ -53,9 +52,12 @@ const WeatherApp = () => {
         weatherCode: currentWeather.weather_code,
         time: currentWeather.time,
       })
+
+      setLocation('')
     } catch (error) {
-      console.error('Erro ao buscar clima:', error)
+      console.error(error)
       setError(error.message || 'Unable to load weather data')
+      setData(null)
     } finally {
       setLoading(false)
     }
@@ -86,25 +88,20 @@ const WeatherApp = () => {
           city={data?.city}
         />
 
-        {loading && (
+        {loading ? (
           <img src={loadingGif} alt="Loading" className="loader" />
-        )}
-
-        {error && !loading && (
+        ) : error ? (
           <NotFound message={error} />
-        )}
-
-        {data && !loading && (
+        ) : data ? (
           <>
             <WeatherCard
               data={data}
               weatherInfo={weatherInfo}
               weatherImage={weatherImage}
             />
-
             <WeatherDetails data={data} />
           </>
-        )}
+        ) : null}
       </div>
     </div>
   )
