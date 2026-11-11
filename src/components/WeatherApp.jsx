@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './WeatherApp.css'
+import SearchBar from './SearchBar'
 import { getWeatherInfo } from '../utils/weatherCode'
 import { formatDate } from '../utils/formatDate'
 import { getCoordinates, getCurrentWeather } from '../services/weatherApi'
@@ -74,26 +75,13 @@ const WeatherApp = () => {
           backgroundImage: backgroundImage.replace('to right', 'to top'),
         }}
       >
-        <div className="search">
-          <div className="search-top">
-            <i className="fa-solid fa-location-dot"></i>
-            <div className="location">{data ? data.city : 'London'}</div>
-          </div>
-
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Enter Location"
-              value={location}
-              onChange={handleInputChanges}
-              onKeyDown={handleKeyDown}
-            />
-            <i
-              className="fa-solid fa-magnifying-glass"
-              onClick={() => search(location)}
-            ></i>
-          </div>
-        </div>
+        <SearchBar
+          location={location}
+          handleInputChanges={handleInputChanges}
+          handleKeyDown={handleKeyDown}
+          search={search}
+          city={data?.city}
+        />
 
         {loading && (
           <img src={loadingGif} alt="Loading" className="loader" />
