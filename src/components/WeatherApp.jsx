@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './WeatherApp.css'
 import { getWeatherImage, describeWeatherCode } from '../utils/weatherCode'
+import { formatDate } from '../utils/formatDate'
 import loadingGif from '../assets/images/loading.gif'
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
@@ -70,7 +71,7 @@ const WeatherApp = () => {
               condition: c.weather_code,
               humidity: c.relative_humidity_2m,
               wind_speedy: `${c.wind_speed_10m} km/h`,
-              date: c.time ? c.time.split('T')[0].split('-').reverse().join('/') : '',
+              date: c.time || '',
             }
           }
         }
@@ -92,18 +93,6 @@ const WeatherApp = () => {
   useEffect(() => {
     search('London')
   }, [])
-
-  const formatDate = (dateStr) => {
-    if (!dateStr) return ''
-    const [day, month, year] = dateStr.split('/')
-    const date = new Date(`${year}-${month}-${day}T00:00:00`)
-    if (Number.isNaN(date.getTime())) return dateStr
-    return date.toLocaleDateString('pt-BR', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-    })
-  }
 
   return (
     <div className="container">
